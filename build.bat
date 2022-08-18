@@ -1,8 +1,22 @@
 @echo off
-set basename=base_apktool_dir
-set appname=com.example.some.client
-set ZIPALIGN=path/to/zipalign.exe
-set APKSIGNER=path/to/apksigner.bat
+
+if [%PACKAGE_NAME%]==[] (
+	echo [91mplease provide PACKAGE_NAME env variable
+	echo [90mset PACKAGE_NAME=com.example.app.kek[0m
+	echo.
+	set DO_EXIT=yes
+)
+
+if [%BASE_DIR%]==[] (
+	echo [91mplease provide BASE_DIR, which contains result of "[90mapktool d some.apk  -o some_dir[91m" command
+	echo [90mset BASE_DIR=path/to/some_dir[0m
+	echo.
+
+	set DO_EXIT=yes
+	
+)
+
+if not [%DO_EXIT%]==[] exit
 
 
 
@@ -35,13 +49,13 @@ if not [%OUTPUT%] == [""] cd %OUTPUT%
 echo [90mDeleting old files...[0m 
 
 
-if exist %basename%_aligned.apk      del %basename%_aligned.apk
-if exist %basename%.apk              del %basename%.apk
-if exist %basename%.apk.apktool_temp del %basename%.apk.apktool_temp 
+if exist %BASE_DIR%_aligned.apk      del %BASE_DIR%_aligned.apk
+if exist %BASE_DIR%.apk              del %BASE_DIR%.apk
+if exist %BASE_DIR%.apk.apktool_temp del %BASE_DIR%.apk.apktool_temp 
 
-if exist %basename%.apk 		     goto exists
-if exist %basename%_aligned.apk      goto exists
-if exist %basename%.apk.apktool_temp goto exists
+if exist %BASE_DIR%.apk 		     goto exists
+if exist %BASE_DIR%_aligned.apk      goto exists
+if exist %BASE_DIR%.apk.apktool_temp goto exists
 
 
 goto ok
@@ -57,10 +71,10 @@ goto ok
 echo [90mTrying to uninstall old apk...[0m  1>&2
 
 
-for /f %%A in ('adb shell pm list packages  ^| grep %appname%') do (
+for /f %%A in ('adb shell pm list packages  ^| grep %PACKAGE_NAME%') do (
     if [%%A] == [] (
         echo [90mUninstalling apk[0m
-		adb uninstall %appname%
+		adb uninstall %PACKAGE_NAME%
     )
 )
 
@@ -72,10 +86,10 @@ echo [101;30m...Running apktool...[0m  1>&2
 
 @REM ←[101;30m NORMAL BACKGROUND COLORS ←[0m
 
-echo k | call apktool b %basename%  -o %basename%.apk
+echo k | call apktool b %BASE_DIR%  -o %BASE_DIR%.apk
 
 
-rem IF NOT EXIST %basename%.apk (
+rem IF NOT EXIST %BASE_DIR%.apk (
 IF ERRORLEVEL 1 (
 	echo.
 	echo [*] [95mbuild.bat:: SADGE... Could not assemble the apk with apktool[0m
@@ -95,17 +109,17 @@ echo [101;30mCalling zipalign...[0m  1>&2
 ping 127.0.0.1 -n 2 > nul
 
 
-%ZIPALIGN%  -p -f -v 4  %basename%.apk   %basename%_aligned.apk 
+%ZIPALIGN%  -p -f -v 4  %BASE_DIR%.apk   %BASE_DIR%_aligned.apk 
 
 
 echo [101;30mSigning the aligned apk...[0m  1>&2
 
-echo 123456| call %APKSIGNER% sign --ks release.keystore  %basename%_aligned.apk 
+echo 123456| call %APKSIGNER% sign --ks release.keystore  %BASE_DIR%_aligned.apk 
 
 echo [101;30mInstalling the aligned and signed apk...[0m  1>&2
 
 
-adb install -t %basename%_aligned.apk
+adb install -t %BASE_DIR%_aligned.apk
 
 
 
