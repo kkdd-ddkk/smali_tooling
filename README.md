@@ -25,4 +25,7 @@ It will patch whatever it can find, and will run `build.bat`
 
 Don't forget to run `adb logcat | grep "KEKW"` before you start the app.
 
+You can use `build.bat` separately to rebuild, zipalign, sign and install the APK.
+
 Have fun.
+
