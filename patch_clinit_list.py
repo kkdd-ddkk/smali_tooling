@@ -125,23 +125,19 @@ def patch_file(fname):
         sliced_contents = [contents[parts[idx]:parts[idx+1]] for idx in range(len(parts)-1)]
 
         patches = []
+
         for m in locations:
-            print_vv(_gray("[*]captured ctor body:"))
-            print_vv("\x1b[36m")
-            for key in m.groupdict(): print_vv ("\t{}{}: {}".format (key, m.span(key), m.groupdict()[key]))
-            print_vv("\x1b[0m")
-
-            print_vv(_gray("[*] searching for all used registers in the ctor"))
-            used_register_numbers = re.findall ("[^\w](?:v|p)([0-9]+)", m.group(0))
-            
-            nargs = len (re.findall (DLV_TYPE_PATTERN, m.group('args'))) # len of parsed method arguments
-            nlocals = int (m.group("locals"))
-
-
-            print_vv(_gray("[*]appending the new patch" + ":" if args.verbose > 1 else ""))
-            print_vv( f"\x1b[33m\"\"\"{CTOR_PATCH}\"\"\"\x1b[0m")
-
             patches.append ( CTOR_PATCH ) 
+            
+            if args.verbose>=2:
+                print_vv(_gray("[*]captured ctor body:"))
+                print_vv("\x1b[36m")
+                for key in m.groupdict(): print_vv ("\t{}{}: {}".format (key, m.span(key), m.groupdict()[key]))
+                print_vv("\x1b[0m")
+                print_vv(_gray("[*]appending the new patch" + ":" if args.verbose > 1 else ""))
+                print_vv( f"\x1b[33m\"\"\"{CTOR_PATCH}\"\"\"\x1b[0m")
+
+
         patches.append ("") # needed for zipping, cuz sliced_contents and patches arrays should have amount of elements
 
         print_vv(_gray("[*] patching..."))
@@ -154,9 +150,6 @@ def patch_file(fname):
         print_vv(_gray("[*] done! patch was applied"))
 
     return
-
-
-
 
 
 
