@@ -128,7 +128,7 @@ def patch_file(fname):
 
         for m in locations:
             patches.append ( CTOR_PATCH ) 
-            
+
             if args.verbose>=2:
                 print_vv(_gray("[*]captured ctor body:"))
                 print_vv("\x1b[36m")
@@ -168,7 +168,7 @@ if __name__== "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--base-dir", required=True, help="base directory of 'apktool d' result (decompiled apk). Please create a git repo in that folder, so that I can rollback the patches.")
     parser.add_argument("-c", "--class-dir", required=True, help="relatively to the BASE_DIR, where should I put my logging class (better not contradict with Lo/MyKek namespace, so choose something like smali_classes4/o)")
-    parser.add_argument("-f", "--file", help="file with list of files to patch. If not set, will patch all smalis, I don't care.")
+    parser.add_argument("-f", "--file", help="file with list of files to patch. If not set, will patch all smali files in BASE_DIR, I don't care.")
     parser.add_argument("-n", "--no-install", action="store_true", help="no installation, only build")
     parser.add_argument(      "--skip-reset", action="store_true", help="skip git reset in the BASE_DIR")
     parser.add_argument("-v", "--verbose", action='count', default=0,  help="guess what, verbosity level")
