@@ -46,7 +46,7 @@ method_patch = """
 {patched}_END
 """.format (patched=PATCHED)
 
-DLV_TYPE_PATTERN = "L[a-zA-Z\$/]+;|[A-Z]" # better not change the order
+DLV_TYPE_PATTERN = "L[a-zA-Z\$/]+;|[?[A-Z]" # better not change the order
 DLV_METHOD_MODIFIER = "(?P<modifier>public |static |protected |private )constructor"
 DLV_CTOR_NAME = "<(cl)?init>"
 
