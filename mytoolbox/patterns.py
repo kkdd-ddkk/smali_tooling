@@ -27,7 +27,7 @@ CTOR_PATCH = """
 
 
 SMALI_TYPE_PATTERN = "L[a-zA-Z0-9\$/]+;|[?[A-Z]" # better not change the order
-SMALI_CTOR_MODIFIER = "(?P<modifier>public |static |protected |private )?constructor"
+SMALI_CTOR_MODIFIER = "(?P<modifier>public |static |protected |private |synthetic )?constructor"
 SMALI_CTOR_NAME = "<(cl)?init>"
 
 ctor_re   = re.compile ( f"""\

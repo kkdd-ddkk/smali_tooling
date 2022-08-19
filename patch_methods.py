@@ -105,7 +105,7 @@ if __name__== "__main__":
     colorama.init()
     
     # Example:
-    # tool.py  -d apktool_result_directory  -f  file_list_to_patch.txt   -c smali_classes4/o
+    # tool.py  -d apktool_result_directory  -f  file_list_to_patch.txt  
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--base-dir", required=True, help="base directory of 'apktool d' result (decompiled apk). Please create a git repo in that folder, so that I can rollback the patches.")
