@@ -3,7 +3,7 @@
 
 Welcome to the smali_tooling wiki!
 
-This tool is created to patch constructors of smali classes. A new class called `logger.Mylogger` is added to the code tree, and every constructor of every class (depending on the file list that you provide) is patched to call a method that prints backtrace to logcat. This tool patches `static`/`public`/`protected`/`private` constructors. 
+This tool is created to patch constructors of smali classes. A new class called `customlogger.BacktraceLogger` is added to the code tree, and every constructor of every class (depending on the file list that you provide) is patched to call a method that prints backtrace to logcat. This tool patches `static`/`public`/`protected`/`private` constructors. 
 
 Take an APK, decompile it with APKtool into BASE_DIR:
 
