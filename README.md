@@ -5,6 +5,12 @@ Welcome to the smali_tooling wiki!
 
 This tool is created to patch constructors of smali classes. A new class called `customlogger.BacktraceLogger` is added to the code tree, and every constructor of every class (depending on the file list that you provide) is patched to call a method that prints backtrace to logcat. This tool patches `static`/`public`/`protected`/`private` constructors. 
 
+## What for?
+
+If you want to see which classes in which order are created, or want to use Frida Gadget and don't know where to patch (again, aim for the most early loaded classes.
+
+## How to use?
+
 Take an APK, decompile it with APKtool into BASE_DIR:
 
 ```
