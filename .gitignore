@@ -1,3 +1,4 @@
 .vscode/*
-patch_methods.py
 test.py
+out/*
+*/__pycache__/*

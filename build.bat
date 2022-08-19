@@ -1,29 +1,29 @@
 @echo off
 
-if [%PACKAGE_NAME%]==[] (
-	echo [91mplease provide PACKAGE_NAME env variable
-	echo [90mset PACKAGE_NAME=com.example.app.kek[0m
-	echo.
-	set DO_EXIT=yes
-)
-
 if [%BASE_DIR%]==[] (
-	echo [91mplease provide BASE_DIR, which contains result of "[90mapktool d some.apk  -o some_dir[91m" command
-	echo [90mset BASE_DIR=path/to/some_dir[0m
-	echo.
+    if not exist "%~1" (
+        echo please provide base directory as the first argument
+        exit 1111
+    )
+    echo setting BASE_DIR to %1
+    set BASE_DIR=%1
 
-	set DO_EXIT=yes
-	
 )
 
-if not [%DO_EXIT%]==[] exit
+
+for  %%A in (apktool zipalign apksigner) do (
+    WHERE /q %%A || ECHO Please make sure that %%A is in %%PATH%%  && exit /b 4444
+)
+
+
+if ["%DO_EXIT%"] NEQ [""] exit %EXITCODE%
 
 
 
 :check_args_loop
 	::-------------------------- has argument ?
 	if ["%~1"]==[""] (
-	echo done.
+	@REM echo done.
 	goto check_args_end
 	)
 
@@ -31,7 +31,7 @@ if not [%DO_EXIT%]==[] exit
 
 	if [%~1] == [/noinstall] set NO_INSTALL=yes
 	if [%~1] == [/output] (
-		set OUTPUT=%2
+		set OUT_DIR=%2
 		goto check_args_end_loop
 	)
 
@@ -41,12 +41,11 @@ if not [%DO_EXIT%]==[] exit
 	goto check_args_loop
 :check_args_end
 
-if not [%OUTPUT%] == [""] cd %OUTPUT%
+if [%OUT_DIR%] NEQ [] cd %OUT_DIR%
 
 
 
-@echo off
-echo [90mDeleting old files...[0m 
+@REM echo [90mDeleting old files...[0m 
 
 
 if exist %BASE_DIR%_aligned.apk      del %BASE_DIR%_aligned.apk
@@ -68,15 +67,15 @@ goto ok
 :ok
 
 
-echo [90mTrying to uninstall old apk...[0m  1>&2
+if not [%PACKAGE_NAME%]==[] (
+    echo [90mTrying to uninstall old apk...[0m  1>&2
 
-
-for /f %%A in ('adb shell pm list packages  ^| grep %PACKAGE_NAME%') do (
-    if [%%A] == [] (
-        echo [90mUninstalling apk[0m
-		adb uninstall %PACKAGE_NAME%
-    )
-)
+    for /f %%A in ('adb shell pm list packages  ^| grep %PACKAGE_NAME%') do (
+        if [%%A] == [] (
+            echo [90mUninstalling apk[0m
+            adb uninstall %PACKAGE_NAME%
+        )
+))
 
 
                                                                            
@@ -86,14 +85,16 @@ echo [101;30m...Running apktool...[0m  1>&2
 
 @REM ←[101;30m NORMAL BACKGROUND COLORS ←[0m
 
-echo k | call apktool b %BASE_DIR%  -o %BASE_DIR%.apk
+@echo on
+echo k | call apktool b -f %BASE_DIR%  -o %BASE_DIR%.apk
+@echo off
 
 
 rem IF NOT EXIST %BASE_DIR%.apk (
 IF ERRORLEVEL 1 (
 	echo.
-	echo [*] [95mbuild.bat:: SADGE... Could not assemble the apk with apktool[0m
-	exit 1
+	echo [95mbuild.bat:: SADGE... Could not assemble the apk with apktool[0m
+	exit 3333
 )
 
 
@@ -109,12 +110,12 @@ echo [101;30mCalling zipalign...[0m  1>&2
 ping 127.0.0.1 -n 2 > nul
 
 
-%ZIPALIGN%  -p -f -v 4  %BASE_DIR%.apk   %BASE_DIR%_aligned.apk 
+zipalign  -p -f -v 4  %BASE_DIR%.apk   %BASE_DIR%_aligned.apk 
 
 
 echo [101;30mSigning the aligned apk...[0m  1>&2
 
-echo 123456| call %APKSIGNER% sign --ks release.keystore  %BASE_DIR%_aligned.apk 
+echo 123456| call apksigner sign --ks release.keystore  %BASE_DIR%_aligned.apk 
 
 echo [101;30mInstalling the aligned and signed apk...[0m  1>&2
 

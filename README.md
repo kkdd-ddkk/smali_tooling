@@ -8,8 +8,10 @@ This tool is created to patch constructors of smali classes. A new class is adde
 Take an APK, decompile it with APKtool into BASE_DIR:
 
 ```
-apktool d some.apk -o BASE_DIR
+apktool d -r some.apk -o BASE_DIR
 ```
+
+-r is preferred, not to have a headache with compiling the resources back.
 
 Create a git repo in the BASE_DIR, and make a local commit, so that the script can revert to it after unsuccesful patching. You can skip resetting wyth `--skip-reset` argument.
 
