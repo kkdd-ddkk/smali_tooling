@@ -15,7 +15,12 @@ apktool d -r some.apk -o BASE_DIR
 
 Create a git repo in the BASE_DIR, and make a local commit, so that the script can revert to it after unsuccesful patching. You can skip resetting with `--skip-reset` argument.
 
-Make `git.exe` accesible in your `%PATH%`.
+Make the following tools accesible in your `%PATH%`:
+* git
+* apktool
+* zipalign
+* apksigner
+
 
 Connect your phone with USB debugging enabled
 
