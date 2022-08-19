@@ -13,7 +13,7 @@ apktool d -r some.apk -o BASE_DIR
 
 -r is preferred, not to have a headache with compiling the resources back.
 
-Create a git repo in the BASE_DIR, and make a local commit, so that the script can revert to it after unsuccesful patching. You can skip resetting wyth `--skip-reset` argument.
+Create a git repo in the BASE_DIR, and make a local commit, so that the script can revert to it after unsuccesful patching. You can skip resetting with `--skip-reset` argument.
 
 Make `git.exe` accesible in your `%PATH%`.
 
