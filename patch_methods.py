@@ -105,7 +105,7 @@ if __name__== "__main__":
     colorama.init()
     
     # Example:
-    # tool.py  -d apktool_result_directory  -f  file_list_to_patch.txt  
+    # tool.py  -d apktool_result_directory  [-f  file_list_to_patch.txt]  
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--base-dir", required=True, help="base directory of 'apktool d' result (decompiled apk). Please create a git repo in that folder, so that I can rollback the patches.")
@@ -144,12 +144,12 @@ if __name__== "__main__":
             ])
 
             lastdir = f'smali_classes{ndexes}' if ndexes > 1 else "smali"
-            namespace = "henlofren"
-            namespacedir = f"{lastdir}/{namespace}"
+
+            namespacedir = f"{lastdir}/{mtb.LOGGER_NAMESPACE}"
             if not os.path.exists(namespacedir): os.makedirs(namespacedir)
 
-            print (f"\x1b[33m{namespacedir}/MyKek.smali\x1b[0m")
-            with open ( f"{namespacedir}/MyKek.smali", "w") as myclass:     myclass.write(mtb.LOGGING_CLASS)    
+            print (f"\x1b[33m{namespacedir}/{mtb.LOGGER_NAME}\x1b[0m")
+            with open ( f"{namespacedir}/{mtb.LOGGER_NAME}.smali", "w") as myclass:     myclass.write(mtb.LOGGING_CLASS)    
             print("[*] done!")
 
 

@@ -1,4 +1,5 @@
 import re
+from .mylogger import *
 
 APKT_ERROR_re = re.compile(b"""\
 I: Smaling (?P<dir>(smali(_classes[0-9]+)?)|(smali)) folder into (?P<nclasses>classes([0-9]+)?.dex)...\r
@@ -15,10 +16,10 @@ PATCHED = "# PATCHED_LOL"
 CTOR_PATCH = """
 {patched}_START
 
-    invoke-static {{}}, Lhenlofren/MyKek;->printBacktrace()V
+    invoke-static {{}}, L{namespace}/{name};->printBacktrace()V
 
 {patched}_END
-""".format (patched=PATCHED)
+""".format (patched=PATCHED, namespace=LOGGER_NAMESPACE, name=LOGGER_NAME)
 
 
 
@@ -76,10 +77,10 @@ CLASS_PATCH = """
 .method static constructor <clinit>()V
     .locals 0
 
-    invoke-static {{}}, Lhenlofren/MyKek;->printBacktrace()V
+    invoke-static {{}}, L{namespace}/{name};->printBacktrace()V
 
     return-void
 .end method
 {patched}_CLASS_END
 
-""".format (patched=PATCHED)
+""".format (patched=PATCHED, namespace=LOGGER_NAMESPACE, name=LOGGER_NAME)
