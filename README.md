@@ -62,7 +62,6 @@ Example output would be:
 08-19 19:34:32.299 26546 26546 D RLOGGER :      com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:548)
 08-19 19:34:32.299 26546 26546 D RLOGGER :      com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1003)
 08-19 19:34:32.299 26546 26546 D RLOGGER :
-
 ```
 
 
