@@ -19,7 +19,7 @@ Make `git.exe` accesible in your `%PATH%`.
 
 Connect your phone with USB debugging enabled
 
-Run `patch_ctors.py  -d BASE_DIR  -c smali_classes4/o  [-v] [-f list_of_smalis.txt]`
+Run `patch_methods.py -d BASE_DIR  [-v] [-f list_of_smalis.txt]`
 
 It will patch whatever it can find, and will run `build.bat`
 
