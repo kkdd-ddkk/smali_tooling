@@ -30,13 +30,21 @@ Make the following tools accesible in your `%PATH%`:
 
 Connect your phone with USB debugging enabled
 
-Run `patch_methods.py -d BASE_DIR  [-v] [-f list_of_smalis.txt]`
+Make a list of files you would like to patch. You hardly need all smali files. Make a choice. You can use something like
 
-It will patch whatever it can find, and will run `build.bat`
+```
+dir /s /b *.smali BASE_DIR | findstr only\specific\namespace > smali_list.txt
+```
+
+Also you might want to pass `-s   some_namespace.SomeClass` to the script, so that it does not move it from its original smali_classesN folder. Some classes should not be touched, otherwise Android cannot find them. This you have to figure out by trials and errors, and by grepping logcat. 
+
+Run `patch_methods.py -d BASE_DIR -f smali_list.txt -s some_namespace.SomeClass [-v]`  (-f can be omitted if you want to patch all smalis, -s can be omitted as well).
+
+It will patch whatever you asked it to, and will run `build.bat`
 
 `build.bat` will try to assemble the apk back, to sign it and install on the phone.
 
-Don't forget to run `adb logcat | grep "KEKW"` before you start the app.
+Don't forget to run `adb logcat | grep "RLOGGER"` before you start the app.
 
 Example output would be:
 
@@ -63,7 +71,6 @@ Example output would be:
 08-19 19:34:32.299 26546 26546 D RLOGGER :      com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1003)
 08-19 19:34:32.299 26546 26546 D RLOGGER :
 ```
-
 
 You can use `build.bat` separately to rebuild, zipalign, sign and install the APK.
 
